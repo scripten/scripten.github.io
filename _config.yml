@@ -1,14 +1,19 @@
 # Site settings
-title: Your awesome title
-email: your-email@domain.com
+title: Code Marathon: A Language a Week
+email: scriptensmg@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+  Hi! I'm Kevin and I'm embarking on a journey to learn a new programming
+  language every week. I'm currently a senior at SUNY Potsdam (that's a
+  fairly small liberal arts college operating out of Potsdam, NY, USA)
+   working toward a Bachelor of Science degree in Computer Science, but
+  soon I hope to be a recent graduate working in Seattle, WA, USA. At the
+  start of this project, I currently am fluent in Python, Java, and C++
+  and familiar with Lua, Prolog, and various tiny scripting languages
+  designed for video game modding applications.
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "http://yourdomain.com" # the base hostname & protocol for your site
-twitter_username: jekyllrb
-github_username:  jekyll
+twitter_username: Scriptensmg
+github_username:  scripten
 
 # Build settings
 markdown: kramdown
