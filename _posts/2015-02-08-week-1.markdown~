@@ -1,0 +1,12 @@
+---
+layout: post
+title: "Week 1: Get Set, Go!"
+date: 2015-02-8
+categories: coding
+---
+
+When I am learning something new, my first steps are generally to do a bit of research into the subject. Rather than getting my hands dirty immediately, I like to have an idea of what I'm looking at. Glossing over discussions of Haskell, I started noticing that they split into two flavors. On the one hand, there were people who came from imperative programming backgrounds, who saw Haskell as something new, terrifying, and powerful if harnessed carefully. On the other hand, there are the Haskell initiates, treating it with significant reverence and telling everyone in earshot of the unfathomable potential they could garner if they would just adopt Haskell. Not unlike the High Priests of Cthulhu, in that regard.
+
+!["Your documentation is the *real* abomination here."]({{ site.url }}/_images/w1-cthulhu.jpg)
+
+    cthulhu.ftagn()
