@@ -5,8 +5,84 @@ date: 2015-02-8
 categories: coding
 ---
 
+First Impressions
+=================
+
 When I am learning something new, my first steps are generally to do a bit of research into the subject. Rather than getting my hands dirty immediately, I like to have an idea of what I'm looking at. Glossing over discussions of Haskell, I started noticing that they split into two flavors. On the one hand, there were people who came from imperative programming backgrounds, who saw Haskell as something new, terrifying, and powerful if harnessed carefully. On the other hand, there are the Haskell initiates, treating it with significant reverence and telling everyone in earshot of the unfathomable potential they could garner if they would just adopt Haskell. Not unlike the High Priests of Cthulhu, in that regard.
 
-!["Your documentation is the *real* abomination here."]({{ site.url }}/_images/w1-cthulhu.jpg)
+!["cthulhu.fhtagn()"]({{ site.url }}/assets/w1-cthulhu.jpg "Your documentation is the *real* abomination here.")
 
-    cthulhu.ftagn()
+I started with some works regarding the legitimacy of functional programming as a whole. Firstly, the student chapter of the ACM at Washington University, St. Louis, MO hosts a small, easy-to-read website that acts as an introduction to functional programming, [Adventures in Functional Programming](https://acm.wustl.edu/functional/index.php). Their article "Why Study Functional Programming? ...or, why make programming even harder?" details precisely what it says on the tin.
+
+Starting with a short look at Scheme, a Lisp-based language, then moving on to Haskell, it compares and contrasts a number of features between the two. Haskell, it seems, is a statically-typed language (allegedly different from statically-typed Java or C++) with built-in pattern matching and currying (that is, taking a function that supports a tuple of arguments and splits it into several single-argument functions) as well as support for monads (functional assembly lines) and a method-centric typeclass system. They say that learning Haskell shouldn't be too hard (hooray!), but that reaching an advanced level of competence with it requires things like the lambda calculus, combinators, and category theory.
+
+At the bottom of the article, the WU ACM chapter generously lists a few links that act both as a deeper introduction to Haskell as well as giving justification for becoming proficient with it. ["Why Haskell?"](http://scienceblogs.com/goodmath/2006/11/26/why-haskell/), a post by Mark C. Chu-Carroll on ScienceBlogs.com, starts in familiar territory. "Haskell is valuable because it forces you to think about programming in a new way," he says. Further down, the heavy hitter comes out to play. His analogy is that Haskell is a language that works well as "glue", that is, it asks the programmer to make a bunch of primitive functions and then it glues them together and makes them work. Coming from a nearly exclusively imperative background, I can see the value here. The last fourth of the post shows an implementation of a quicksort algorithm. This is my first experience with a Haskell program, and it's not terrifying. It is, however, elegant, and I've transcribed it below just to show how elegant it is.
+
+    qsort [] = []
+    qsort (x:xs) = qsort smaller ++ [x] ++ qsort bigger
+    where smaller = filter ( bigger = filter (>=x) xs
+
+That's all of three lines, and relatively easy-to-understand ones, at that. In the interest of space, I'll forego explaining this code, but the link above to "Why Haskell?" leads straight to the programmer's own description.
+
+After covering these articles, I went on to look at a few more, just to get an idea of what I was getting into. I'm not going to cover those in any detail, but they should be easy enough to find for anyone who wants to follow in my errant footsteps. A bit of Google-fu should do the trick.
+
+Testing the Waters
+==================
+
+With the introductory bits finished, I move on to getting Haskell up and running on my own box. The Haskell platform seems to be the standard way to go about desktop development, so I grab that from my distro's package manager. It's pretty big, so while I wait for it to finish, I take a look around the [Haskell wiki](https://wiki.haskell.org/Haskell_in_5_steps) and [Try Haskell](http://tryhaskell.org/) shows up right under the reference to the platform. The site is clean and it offers a tutorial. Typing "help" in the prompt starts it up, a textbox on the side becoming an interactive tutor. The first few steps are relatively painless; very similar in syntax to Python, if I'm being honest. The sorting function shows itself to be pretty robust, which is unsurprising considering the claims of those introductory articles.
+
+Some examples here:
+
+    > sort [42,13,22]
+    [13,22,42]
+    
+    > sort "Kevin"
+    "Keinv"
+
+Moving on, I start to see some of the functional aspects of the language:
+
+    > let x = 4 in x * x
+    16
+    
+    > let x = 8 * 10 in x + x
+
+The let command binds something to a variable. The syntax here goes like this: let var = expression in body
+That means that the variable is bound to the expression and executed in the body. Nothing too serious yet, but the syntax is growing on me. Performing a number of different operations is, well... elegant. Take a look at how easy it is to iterate through a list and perform operation on each element:
+
+    > map (*99) [1..10]
+    [99,198,297,396,495,594,693,792,891,990]
+    
+    > map (/5) [13,24,52,42]
+    [2.6,4.8,10.4,8.4]
+    
+    > filter (>5) [62,3,25,7,1,9]
+    [62,25,7,9]
+
+Since the tutorial link is right up above, I'm not going to summarize the rest of it. (Boy, this is turning into a theme, isn't it?) Suffice to say that, after roughly ten minutes of working on the tutorial, I am pattern matching without trouble. Again, quite elegant!
+
+Knee Deep in the Dev
+====================
+
+While I've been reading around, repeated mentions of a free online book have been popping up. ["Learn You a Haskel for Great Good"](http://learnyouahaskell.com/) looks to be the go-to source for getting a decent introduction to the language. Illustrated with bright colors and cute pictures, it kind of makes me think of "baby's first Haskell", which is just what I need! (Actually, the writing is not condescending in the least and doesn't skimp on the details.)
+
+With the Try Haskell tutorial under my belt, the basic functionality of Haskell is already there for me to reference. However, "Learn You" starts by working with the desktop environment, both in a live interpreter and with compiled *.hs files. We start by making functions and gluing them together to make bigger ones. It's all very iterative, like programming with building blocks.
+
+Here's where baby.hs starts off (Note that I've omitted the > prompt here to denote that this is part of a file and not input to an interpreter.):
+
+    doubleme x = x + x
+    
+    doubleus x y = doubleme x + doubleme y
+    
+    doubleSmallNumber x = if x < 100 then x*2 else x
+    
+    doubleList l = [doubleme x | x <- [1..10]]
+<p></p>
+Some explanation of that last one is in order. The function doubleList takes a list, then essentially iterates over the list, using the doubleMe function on each element as it processes the list into a new one. Lists are immutable in Haskell and lists are also very common. As in C++ where strings are arrays of chars, in Haskell, strings are lists of chars. This lets you do some pretty impressive things with strings, since Haskell has a great selection of functions for working with lists.
+
+Eventually, we make it to our first real solution. Presented with the problem of finding a right triangle, with sides of length 10 or less, with a perimeter of 24, we do the following:
+
+    > let triangles = [ (a,b,c) | c <- [1..10], b <- [1..10], a <- [1..10] ]
+    > let rightTriangles = [ (a,b,c) | c <- [1..10], b <- [1..c], a <- [1..b], a^2 + b^2 == c^2]
+    > let rightTriangles' = [ (a,b,c) | c <- [1..10], b <- [1..c], a <- [1..b], a^2 + b^2 == c^2, a+b+c == 24]
+<p></p>
+The first line is fairly self-explanatory. We define a triangle using a triple tuple, with each element of the tuple standing for a side of the triangle. Then we add a layer on top and define rightTriangle as the same thing, but using the Pythagorean theorem as a filter on our triangles. Finally, we add another filter, requiring that the perimeter of the triangle is 24. For a more detailed look, "Learn You a Haskell" is linked above.
