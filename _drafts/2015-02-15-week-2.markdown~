@@ -1,0 +1,15 @@
+---
+layout: post
+title: "Week 2: Programming the Web (JavaScript)"
+date: 2015-02-15
+categories: coding
+---
+
+If it's not apparent from the title of this post, JavaScript is toted by its
+creators as "the Programming Language of the Web". With its roots in
+client-side scripts run from web pages, JavaScript has grown to take on a great
+number of other applications, including game development, server-side web
+applications, and desktop widgets.  Like Python (and, for that matter, Java),
+JavaScript is a multi-paradigm programming language, employing various
+programming paradigms.  One can write using imperative, object-oriented, and
+functional concepts in the same application, depending on the program's needs.
