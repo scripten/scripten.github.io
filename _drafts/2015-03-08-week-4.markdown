@@ -1,0 +1,176 @@
+---
+layout: post
+title: "Week 4/5 - There's No Place Like ~ (Ruby)"
+date: 2015-03-08
+categories: coding
+---
+
+Double Dipping
+==============
+
+My experience with Ruby and its associated libraries is minimal. While I have had it installed on my box for compiling other applications from source, I've never delved into the language myself, until now. Thankfully, there are a number of sources that claim that Ruby's learning curve is forgiving and that the language is powerful despite simple syntax. (This is one of the qualities I adore about Python.)
+
+After some initial research, I've found a number of sources to use for learning the language. Ruby's own documentation includes a [Ruby in Twenty Minutes](https://www.ruby-lang.org/en/documentation/quickstart/) quickstart guide, which is where I'll be starting. After that, I'll be heading over to Darren Jones' [Getting Started with Ruby](http://www.sitepoint.com/getting-started-ruby/) on sitepoint.com. Lastly, I'll be going through Andrew Burgess' [Ruby for Newbies](http://code.tutsplus.com/tutorials/ruby-for-newbies-installing-ruby-and-getting-started--net-15116) at tutsplus.com. Once I've finished the tutorials, I will be reading the first section of [Programming Ruby](http://docs.ruby-doc.com/docs/ProgrammingRuby/), a free online book about the language. By the time I'm done with these, I'll likely have enough experience with Ruby to make something slightly interesting.
+
+Puts "The Lotion on its Skin"
+=============================
+
+Starting with IRB, the live Ruby interpreter, Ruby in Twenty Minutes takes us through the basic syntax of the language. Math is simple, infix notation and printing is pretty simple, comparable to Python 2 at the outset. ('Puts' is the print function in Ruby. However, `print` works as well, though the syntax is slightly different and `puts` puts a newline after returning.) As with Python, using modules (Ruby's namespace/package equivalent) is simple; `Math.sqrt(9)` returns 3, etc. Method definitions are begun by a def [name] line, then ended with the keyword `end`. No brackets here, apparently. Even parentheses are optional for method calls. (Later on, I find that using parentheses is good practice except in the most simple of cases.)
+
+Oops, it seems I'm mistaken. We *do* have brackets, but their use is a little different. Here's an example:
+
+	def hello(name = "world")
+	print "Hello, #{name.capitalize}!"
+	end
+
+This method takes a string, `name`, then prints a greeting with the name inserted into the output string. We also have a default value for name so `hello()` can be called with no arguments.
+
+Classy Jewels
+=============
+
+Before long, the idea of classes and objects are introduced. Of course, I have a significant amount of experience with both of these concepts from my familiarity with other object-oriented languages. Class declarations are unique in syntax, but the basics are nothing wholly alien. One of the nice features is the automatic encapsulation of instance variables, requiring getters and setters right at the gate. (At least, I find it nice, since it encourages good design practices.) There is a more correctly Ruby way to do this. Using the attribute accessor allows attributes of classes to be modified from without, just like access methods. For example, in a class `Person`, say we have an attribute `name`. Adding `attr_accessor :name` allows name to be accessed after initialization, while `attr_writer :name` allows it to be modified.
+
+Statements in Ruby feel a little different from its contemporaries, but the ideas are mostly the same. Let's take a look at some code:
+
+	if possibleList.respond_to?("each")
+          possibleList.each do |element|
+	    puts "#{element.capitalize}"
+
+Basically, what we're saying here is "if possibleList can be iterated upon (that's the 'each' bit), then iterate on it and capitalize each element of the list and, finally, print those capitalized elements." The syntax feels somewhat like a mix between imperative and functional programming, though it leans toward other mixed-paradigm languages and thus relies more on imperative foundations.
+
+It's important to mention that Ruby takes naming conventions pretty seriously. Local identifiers are to start with lowercase characters, using the camelCase convention. Global variables begin with `$`, instance variables with `@`, class variables with `@@`, and, finally, class and module names as well as constants begin with capital letters. This is surprisingly convenient. Even in strongly typed languages like Java, it is possible to forget or be confused about the scope of a variable. Keeping these naming conventions in mind instantly informs the programmer about what they are working with.
+
+Speaking of these scopes, I'd like to take a moment here and talk about class variables and methods. While instance variables and methods are useful, they do have some limitations. For example, each instance is, by design, blind with regard to the greater scheme of things. An instance can check how many times something internal to it has happened, but it cannot see how many times that same thing has happened to all objects of its class. Ruby offers class veriable and methods to mitigate this problem. Prepended with `@@`, class variables are shared among all objects of that type. Class methods are methods that are likewise decoupled from instances. These are the methods that are called when creating a new instance of an object or performing some sort of operation that doesn't require a specific instance of the class to be referenced.
+
+Blocks of Code
+==============
+
+Ruby's code blocks are unique and practical. Much like in Haskell (See Week 1 for more details!), Ruby allows for chunks of code to be passed around. For example, the following code block is given as an example in "Programming Ruby":
+
+    def callBlock
+      yield
+      yield
+    end
+
+    callBlock { puts "In the block" }
+
+By calling yield twice in callBlock, the code `puts "In the block"` is executed twice. This is exceptionally useful when paired with the ability to pass parameters to `yield`. Let's look again at the code from the last section. Specifically, this:
+
+    possibleList.each {|element| puts "#{element.capitalize}"}
+
+Using code blocks to execute code with provided parameters allows for simple, elegant code. (Both the brackets displayed here and the earlier `do` block are functionally the same.) In fact, the constructs from other languages, control structures like `for`, `while`, and the like, are just method calls in Ruby. Unlike many of its contemporaries, Ruby is wholly object-oriented.
+
+Blocks can also be used as closures, holding all the context from when they are first defined, even if the environment that they were defined in has since disappeared. Using Ruby's `Proc` class, closures allow for code to be passed, as mentioned above, and then used with their associated object later on. Numerous applications of closures are immediately apparent to the cunning developer, including such things as dynamic UI behavior.
+
+Getting Expressive
+==================
+
+In most programming languages, the distinctions between expressions, which return values, and statements, which control program flow, are stark. In Ruby, these barriers are less defined. Ruby treats much of the syntax associated with statements in other languages as expressions. This means, for example, that `if` statements can be used to assign values in Ruby. So the following code is completely acceptable in Ruby (The second version uses slightly different syntax, but is effectively the same code.):
+
+    value = if otherValue == 5
+              10
+            else
+              5
+            end
+
+or
+
+    value = if otherValue == 5 then 10 else 5 end
+
+Speaking of which, Ruby's `if` statements are pretty cool. There's the normal `if` as above as well as the negated `unless` expression. (Sure, it's not necessary, but it makes code read a lot like natural language.) There are also case statements, using `case [variable]` to begin the block and `when [value]` for each specific potential value of the variable.
+
+Going back to the fact that Ruby is a true object-oriented language, this means that even operator expressions must be built using objects. And such is the case. When writing code like `a + b`, Ruby is actually interpreting the code as `a.+(b)`. That is, even operators are just method calls. This means that they can be overrided. (This reminds me of operator overloading in C++, actually.) While it is entirely possible to make 1 + 1 equal 3, "Programming Ruby" offers a more pragmatic approach. Overriding the `[ ]` indexing operator allows for custom behavior in new classes when using the `[ ]` operator. Valuable stuff!
+
+Even assignments are expressions in Ruby. So the following code sets *both* a and b to 10: `a = b = 5 * 2` while this code sets a to 10 and b to 5: `a = (b = 5) * 2`. (This brings up the concept of nested assignments as in the case of `a, (b, c) d = 1, 2, 3, 4`. In this example, b and c are assigned first due to having a higher precedence. Therefore, b = 1, c = 2, a = 3, and d = 4.) Moreover, assignments are performed in parallel, meaning that swapping variables is as simple as `a, b = b, a`. (Specifically, the values on the right-hand side are evaluated before doing anything on the left.) With most of my experience programming being in languages like Java and Python, this sort of intuitive, if easily misused, behavior is quite alien. There are definitely potential benefits with regard to reducing code complexity here, but dangerous practices are also quite viable. With great power of assignment comes great responsibility.
+
+A Short, Shiny Project
+======================
+
+To get a handle on the language, I went ahead and created a quick and dirty account manager system. It's hardly production-level code, but it does display a number of Ruby's features.
+
+    # This class calls up an accounts file from the drive, then reads it on
+    # initialization, converting lines into series of usernames and passwords.
+    # (It's pretty weak code, but it does have the benefit of being really
+    # simple!) We can then register new accounts that get written to the file
+    # using the basic user interface below.
+
+    class AccountManager
+
+      def initialize(filename = 'w4-accounts.txt')
+        # Here's our instance variable that holds the hash (or dictionary, etc)
+        # with all of our account information in it.
+        @hash = { }
+        # This is exception handling for the file IO. Begin blocks are Good.
+        begin
+          @file = File.open(filename, "a+")
+          # There's actually a number of ways to read lines in a file. I
+          # prefer this one, since it is the most readable to me.
+          for line in @file.readlines
+            name, password = line.chomp.split
+            # The unless clauses here ensure that improperly formatted data
+            # isn't read into the hash at all. Further work would likely delete
+            # corrupted entries from the file altogether.
+            @hash[name] = password unless name.nil? or password.nil?
+                          or line.chomp.split.length > 2
+          end
+
+          rescue SystemCallError
+            $stderr.print "IO failed: " + $!
+            @file.close
+            File.delete(filename)
+            raise
+        end
+      end
+
+      # This method returns the password of an account given the account name.
+      # (Not very secure! But great for seeing how the manager works.)
+      def GetAccountPassword(name)
+        if @hash[name].nil?
+          puts "Account name not recognized."
+          print "Accounts: "
+          puts @hash
+          return "Try 'register'"
+        else
+          return @hash[name]
+        end
+      end
+
+      # This method registers a new username-password combo, then writes it to
+      # the file. That means that the account can be used immediately and will
+      # be available later. Obvious improvements include checking for duplicate
+      # entries and allowing for updating passwords.
+      def Register(name, password)
+        @file.write(name + " " + password + "\n")
+        @hash[name] = password unless name.nil? or password.nil?
+      end
+
+      def Close()
+        @file.close()
+      end
+    end
+
+    am = AccountManager.new
+    print ":> "
+    while (name = gets.chomp) != "exit"
+      if name.downcase == "register"
+        print "Username: "
+        name = ""
+        name = gets.chomp until name.length > 0 and name.split.length == 1
+        print "Password: "
+        password = ""
+        password = gets.chomp until password.length > 0
+                                    and password.split.length == 1
+        am.Register(name, password)
+      else
+        puts am.GetAccountPassword(name)
+      end
+      print ":> "
+    end
+    am.Close()
+
+Retrospective
+=============
+
+Ruby is a very interesting language. It's intuitive with just a little practice and offers the coder a lot of power. There are a few practices that it allows for that seem risky to me, but few languages do not have similar issues. (And really, it's not so bad a thing to expect programmers to know what they are working with and how to write safe, smart code.) Further reading into the languages would deal with modules, graphical elements, and Ruby on Rails, a popular web framework built on top of the Ruby. As with any programming languages, gaining a deep understanding of Ruby does take some time commitment (certainly more than a week or two), but the power it leverages is impressive. I will certainly continue using the language for further projects.
+
+Next week, it's back to the regular schedule (though it's tempting to work at two-week blocks) with a new language. Looking at a few online sources about where the industry is headed, I've decided that Objective-C will be next on the agenda. With experience in other object-oriented, C-derived languages, I imagine it will not be a tough language to learn, but I do have high hopes that the endeavor will nonetheless be fruitful. See you next week and, as always, thanks for reading!
